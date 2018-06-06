@@ -4,12 +4,12 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
+A DevOps !!!
 
 ### More Information
 
-A place to include any other types of information that you'd like to include about yourself.
-[_config.yml]({{ site.baseurl }}/images/config.png)
+Nothing to say.
+![]({{ site.baseurl }}/images/calculator2.png)
 
 ### Contact me
 
