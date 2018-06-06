@@ -9,7 +9,7 @@ A DevOps !!!
 ### More Information
 
 Nothing to say.
-![]({{ site.baseurl }}/images/calculator2.png)
+![haha]({{ site.baseurl }}/images/calculator2.png)
 
 ### Contact me
 
