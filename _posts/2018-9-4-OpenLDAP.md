@@ -20,6 +20,7 @@ title: 编译安装OpenLDAP, phpldapadmin
     make && make depend && make install
 
     注意：需要先安装openssl-devel， 不然会出错
+          可以使用ldd slapd查看是否关联了openssl
 
 四  修改配置文件slapd.conf
 
@@ -62,8 +63,60 @@ title: 编译安装OpenLDAP, phpldapadmin
     注意：用户名是完整的dn
 
 
+***
+
+下面是TLS配置
+
+1  CA中心操作
+    1.1  生成CA根密钥
+    openssl genrsa -out cakey.pem 2048  //可以加上-des3使用Triple DES算法，但之后调用时要求输入密码
+
+    查看生成的密钥
+    openssl rsa --noout -text -in cakey.pem
+
+    基于安全性， 密钥权限建议为600或400
+
+    1.2  生成CA根证书
+    openssl req -new -x509 -days 365 -key cakey.pem -out ca.crt
+    之后要求输入一些信息， Common Name填主机名或者ip
+
+    查看证书
+    openssl x509 --noout -text -in ca.crt
+
+2  openldap服务器端操作
+    2.1  生成openldap服务器私钥
+    openssl genrsa -out ldapkey.pem
+
+    2.2  生成openldap服务器证书签署请求文件
+    //请求文件需要发给CA中心签署生成证书，相当于公钥
+    openssl req -new -key ldapkey.pem -out ldapserver.csr
+
+3  CA中心签署证书
+    3.1  准备工作
+    cp /etc/pki/tls/openssl.cnf ./
+    mkdir -p newcerts
+    touch index.txt
+    echo "00" > serial
+
+    修改openssl.cnf， dir部分， 指向当前配置文件工作目录
+
+    3.2  签署证书
+    //将openldap生成的csr文件发给ca
+    //如果重新签署证书， 需要将index.txt的内容还原为index.txt.old的内容
+    openssl ca -days 365 -cert ca.crt -keyfile cakey.pem -in ldapserver.csr -out ldapsever.crt -config openssl.cnf
+
+    3.3  把相关文件放到四的位置
 
 
 
-    
+
+
+
+
+
+
+
+
+
+
 
