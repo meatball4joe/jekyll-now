@@ -19,6 +19,8 @@ title: 编译安装OpenLDAP, phpldapadmin
     env CPPFLAGS="-I/usr/local/BDB5.3.21/include" LDFLAGS="-L/usr/local/BDB5.3.21/lib" ./configure --prefix=/usr/local/openldap --with-tls=openssl
     make && make depend && make install
 
+    注意：需要先安装openssl-devel， 不然会出错
+
 四  修改配置文件slapd.conf
 
     添加生成好的证书，密钥
